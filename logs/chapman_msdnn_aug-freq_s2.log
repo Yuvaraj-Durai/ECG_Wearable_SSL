@@ -1,0 +1,23 @@
+msdnn_aug-freq_s2: train 36120 val 4515 test 4515 classes 62 leads 12 aug ('freq',)
+ep   0 lr 1.20e-03 train 3.6797 val 2.6930 best 2.6930@0 132s
+ep   5 lr 2.20e-03 train 1.9611 val 1.8728 best 1.8728@5 300s
+ep  10 lr 3.20e-03 train 1.8075 val 1.6773 best 1.6773@10 482s
+ep  15 lr 4.20e-03 train 1.4827 val 1.6617 best 1.5916@14 663s
+ep  20 lr 5.20e-03 train 1.4537 val 1.5397 best 1.5210@17 845s
+ep  25 lr 6.20e-03 train 1.3041 val 1.5114 best 1.4159@24 1027s
+ep  30 lr 7.20e-03 train 1.3008 val 1.4017 best 1.4017@30 1210s
+ep  35 lr 8.20e-03 train 1.1583 val 1.4125 best 1.4017@30 1373s
+ep  40 lr 9.20e-03 train 1.1162 val 1.4420 best 1.3914@36 1543s
+ep  45 lr 9.80e-03 train 1.0449 val 1.4280 best 1.3914@36 1730s
+ep  50 lr 8.80e-03 train 1.0122 val 1.5415 best 1.3914@36 1914s
+ep  55 lr 7.80e-03 train 0.9144 val 1.6328 best 1.3914@36 2073s
+ep  60 lr 6.80e-03 train 0.8244 val 1.6873 best 1.3914@36 2244s
+ep  65 lr 5.80e-03 train 0.6865 val 1.7702 best 1.3914@36 2428s
+ep  70 lr 4.80e-03 train 0.5788 val 1.8964 best 1.3914@36 2612s
+ep  75 lr 3.80e-03 train 0.4307 val 2.0487 best 1.3914@36 2796s
+ep  80 lr 2.80e-03 train 0.3929 val 2.1615 best 1.3914@36 2979s
+ep  85 lr 1.80e-03 train 0.3199 val 2.2371 best 1.3914@36 3163s
+ep  90 lr 5.02e-04 train 0.2400 val 2.2871 best 1.3914@36 3326s
+ep  95 lr 1.59e-05 train 0.2176 val 2.2937 best 1.3914@36 3480s
+ep  99 lr 1.00e-06 train 0.2131 val 2.2915 best 1.3914@36 3611s
+msdnn_aug-freq_s2 done in 60.2 min: test AUROC 0.9459 AUPRC 0.3510 F1 0.3545

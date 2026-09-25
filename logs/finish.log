@@ -1,0 +1,9 @@
+Thu Sep 24 11:37:22 PM IST 2026 building CPSC2018 cache
+cpsc2018 6146 records of 6146
+Fri Sep 25 02:42:45 AM IST 2026 CPSC2018 ensemble
+cpsc_pw_aug: vote F1 0.806  mean-prob F1 0.808  single 0.782±0.010  AUROC 0.968
+cpsc_aug: vote F1 0.820  mean-prob F1 0.821  single 0.786±0.018  AUROC 0.974
+Fri Sep 25 02:42:45 AM IST 2026 CAM
+saved figures/fig3c_cam.png
+Fri Sep 25 02:42:48 AM IST 2026 report
+Fri Sep 25 02:43:02 AM IST 2026 FINISH_DONE

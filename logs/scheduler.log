@@ -1,0 +1,152 @@
+77 pending jobs, 2 GPUs, capacity 5.0/GPU
+18:37:34 start gpu0 load 4.5 chapman/msdnn_s0
+18:44:35 start gpu0 load 4.0 chapman/msdnn_aug_s0
+18:44:35 start gpu0 load 5.0 chapman/msdnn_aug-freq_s0
+19:17:41 done chapman/msdnn_s0
+19:17:41 start gpu0 load 5.0 chapman/msdnn_aug-crop_s0
+19:33:23 done chapman/msdnn_aug-freq_s0
+19:33:23 start gpu0 load 5.0 chapman/msdnn_aug-cycle_s0
+19:59:48 done chapman/msdnn_aug_s0
+19:59:48 start gpu0 load 5.0 chapman/msdnn_aug-channel_s0
+20:04:08 done chapman/msdnn_aug-crop_s0
+20:04:08 start gpu0 load 4.5 chapman/msdnn_frac0.1_s0
+20:11:50 done chapman/msdnn_frac0.1_s0
+20:11:50 start gpu0 load 4.6 chapman/msdnn_frac0.2_s0
+20:23:32 done chapman/msdnn_frac0.2_s0
+20:23:32 start gpu0 load 4.7 chapman/msdnn_frac0.3_s0
+20:23:52 done chapman/msdnn_aug-cycle_s0
+20:23:52 start gpu0 load 4.3 chapman/msdnn_frac0.4_s0
+20:39:54 done chapman/msdnn_frac0.3_s0
+20:39:54 start gpu0 load 4.5 chapman/msdnn_frac0.5_s0
+20:43:55 done chapman/msdnn_frac0.4_s0
+20:43:55 start gpu0 load 4.5 chapman/msdnn_frac0.6_s0
+20:50:16 done chapman/msdnn_aug-channel_s0
+20:50:16 start gpu0 load 4.4 chapman/msdnn_frac0.7_s0
+21:04:38 done chapman/msdnn_frac0.5_s0
+21:04:38 start gpu0 load 4.5 chapman/msdnn_frac0.8_s0
+21:13:00 done chapman/msdnn_frac0.6_s0
+21:13:00 start gpu0 load 4.7 chapman/msdnn_frac0.9_s0
+21:24:02 done chapman/msdnn_frac0.7_s0
+21:24:02 start gpu0 load 4.8 chapman/msdnn_s1
+21:43:05 done chapman/msdnn_frac0.8_s0
+21:43:05 start gpu0 load 5.0 chapman/ssdnn_s1
+21:46:05 start gpu0 load 4.5 chapman/dnn_s1
+21:55:27 done chapman/msdnn_frac0.9_s0
+21:55:27 start gpu0 load 4.5 chapman/msdnn_aug_s1
+22:09:09 done chapman/msdnn_s1
+22:09:09 start gpu0 load 4.5 chapman/msdnn_aug-freq_s1
+22:12:50 done chapman/ssdnn_s1
+22:12:50 start gpu0 load 4.5 chapman/msdnn_aug-crop_s1
+22:20:31 done chapman/dnn_s1
+22:20:31 start gpu0 load 4.0 chapman/msdnn_aug-cycle_s1
+22:20:31 start gpu0 load 5.0 chapman/msdnn_aug-channel_s1
+23:03:18 done chapman/msdnn_aug-freq_s1
+23:03:18 start gpu0 load 5.0 chapman/msdnn_s2
+23:07:39 done chapman/msdnn_aug-crop_s1
+23:07:39 start gpu0 load 5.0 chapman/ssdnn_s2
+23:18:20 done chapman/msdnn_aug-channel_s1
+23:18:20 start gpu0 load 5.0 chapman/msdnn_aug_s2
+23:19:40 done chapman/msdnn_aug_s1
+23:19:41 start gpu0 load 5.0 chapman/msdnn_aug-freq_s2
+23:21:01 done chapman/msdnn_aug-cycle_s1
+23:21:01 start gpu0 load 5.0 chapman/msdnn_aug-crop_s2
+23:28:02 start gpu1 load 1.0 chapman/msdnn_pw_s0
+23:28:02 start gpu1 load 2.0 chapman/msdnn_pw_aug_s0
+23:28:02 start gpu1 load 2.5 chapman/msdnn_pw_frac0.1_s0
+23:28:02 start gpu1 load 3.1 chapman/msdnn_pw_frac0.2_s0
+23:28:22 start gpu1 load 3.8 chapman/msdnn_pw_frac0.3_s0
+23:28:22 start gpu1 load 4.5 chapman/msdnn_pw_frac0.4_s0
+23:38:04 done chapman/msdnn_pw_frac0.1_s0
+23:38:04 start gpu1 load 4.7 chapman/msdnn_pw_frac0.5_s0
+23:41:24 done chapman/ssdnn_s2
+23:41:24 start gpu0 load 4.8 chapman/msdnn_pw_frac0.6_s0
+23:44:05 done chapman/msdnn_pw_frac0.2_s0
+23:44:05 start gpu1 load 4.9 chapman/msdnn_pw_frac0.7_s0
+23:50:46 done chapman/msdnn_pw_frac0.3_s0
+23:52:46 done chapman/msdnn_s2
+23:52:46 start gpu0 load 4.7 chapman/msdnn_pw_frac0.8_s0
+23:56:27 done chapman/msdnn_pw_frac0.4_s0
+23:56:27 start gpu1 load 4.5 chapman/msdnn_pw_frac0.9_s0
+00:10:29 done chapman/msdnn_pw_frac0.5_s0
+00:10:29 start gpu1 load 4.8 chapman/msdnn_pw_aug_lead-I_s0
+00:14:10 done chapman/msdnn_pw_frac0.6_s0
+00:14:10 start gpu0 load 4.9 chapman/msdnn_pw_aug_lead-holter_s0
+00:20:11 done chapman/msdnn_aug-freq_s2
+00:20:11 start gpu0 load 4.9 chapman/msdnn_pw_aug_lead-frank_s0
+00:21:31 done chapman/msdnn_aug-crop_s2
+00:21:31 start gpu0 load 4.9 chapman/msdnn_pw_s1
+00:24:11 done chapman/msdnn_pw_frac0.7_s0
+00:24:11 start gpu1 load 5.0 chapman/msdnn_pw_aug_s1
+00:25:12 done chapman/msdnn_pw_s0
+00:25:12 start gpu1 load 5.0 chapman/msdnn_pw_aug_lead-I_s1
+00:31:13 done chapman/msdnn_pw_frac0.8_s0
+00:31:13 start gpu0 load 5.0 chapman/msdnn_pw_aug_lead-holter_s1
+00:39:54 done chapman/msdnn_pw_frac0.9_s0
+00:39:54 start gpu1 load 5.0 chapman/msdnn_pw_aug_lead-frank_s1
+00:45:55 done chapman/msdnn_aug_s2
+00:45:55 start gpu0 load 5.0 chapman/msdnn_pw_s2
+00:54:56 done chapman/msdnn_pw_aug_s0
+00:54:56 start gpu1 load 5.0 chapman/msdnn_pw_aug_s2
+01:02:58 done chapman/msdnn_pw_s1
+01:02:58 start gpu0 load 5.0 chapman/msdnn_aug-cycle_s2
+01:21:01 done chapman/msdnn_pw_aug_lead-I_s0
+01:21:01 start gpu1 load 5.0 chapman/msdnn_aug-channel_s2
+01:28:22 done chapman/msdnn_pw_s2
+01:28:22 start gpu0 load 5.0 chapman/msdnn_pw_aug_lead-I_s2
+01:30:42 done chapman/msdnn_pw_aug_s1
+01:30:42 start gpu1 load 5.0 chapman/msdnn_pw_aug_lead-holter_s2
+01:31:22 done chapman/msdnn_pw_aug_lead-I_s1
+01:31:22 start gpu1 load 5.0 chapman/msdnn_pw_aug_lead-frank_s2
+01:31:42 done chapman/msdnn_pw_aug_lead-holter_s0
+01:31:42 start gpu0 load 5.0 cpsc2018/cpsc_pw_aug_f0
+01:35:23 done chapman/msdnn_pw_aug_lead-frank_s0
+01:35:23 start gpu0 load 5.0 cpsc2018/cpsc_aug_f0
+01:43:24 done chapman/msdnn_pw_aug_lead-holter_s1
+01:43:24 start gpu0 load 5.0 cpsc2018/cpsc_pw_aug_f1
+01:45:25 done chapman/msdnn_pw_aug_lead-frank_s1
+01:45:25 start gpu1 load 5.0 cpsc2018/cpsc_aug_f1
+01:49:45 done cpsc2018/cpsc_pw_aug_f0
+01:49:45 start gpu0 load 5.0 cpsc2018/cpsc_pw_aug_f2
+01:50:05 done chapman/msdnn_aug-cycle_s2
+01:50:05 start gpu0 load 5.0 cpsc2018/cpsc_aug_f2
+01:52:26 done cpsc2018/cpsc_aug_f0
+01:52:26 start gpu0 load 5.0 cpsc2018/cpsc_pw_aug_f3
+01:57:06 done cpsc2018/cpsc_pw_aug_f1
+01:57:07 start gpu0 load 5.0 cpsc2018/cpsc_aug_f3
+02:01:47 done chapman/msdnn_pw_aug_s2
+02:01:47 start gpu1 load 5.0 cpsc2018/cpsc_pw_aug_f4
+02:04:48 done cpsc2018/cpsc_aug_f1
+02:04:48 start gpu1 load 5.0 cpsc2018/cpsc_aug_f4
+02:05:48 done chapman/msdnn_aug-channel_s2
+02:05:48 start gpu1 load 5.0 cpsc2018/cpsc_pw_aug_f5
+02:06:08 done cpsc2018/cpsc_pw_aug_f2
+02:06:08 start gpu0 load 5.0 cpsc2018/cpsc_aug_f5
+02:06:48 done cpsc2018/cpsc_aug_f2
+02:06:48 start gpu0 load 5.0 cpsc2018/cpsc_pw_aug_f6
+02:09:28 done cpsc2018/cpsc_pw_aug_f3
+02:09:28 start gpu0 load 5.0 cpsc2018/cpsc_aug_f6
+02:12:29 done cpsc2018/cpsc_aug_f3
+02:12:29 start gpu0 load 5.0 cpsc2018/cpsc_pw_aug_f7
+02:13:29 done chapman/msdnn_pw_aug_lead-I_s2
+02:18:50 done cpsc2018/cpsc_pw_aug_f4
+02:19:30 done cpsc2018/cpsc_aug_f5
+02:19:30 start gpu0 load 4.5 chapman/dnn_s2
+02:19:30 start gpu1 load 5.0 cpsc2018/cpsc_aug_f7
+02:21:30 done cpsc2018/cpsc_pw_aug_f6
+02:21:30 start gpu0 load 4.5 cpsc2018/cpsc_pw_aug_f8
+02:22:10 done cpsc2018/cpsc_aug_f4
+02:22:10 start gpu1 load 5.0 cpsc2018/cpsc_aug_f8
+02:23:31 done cpsc2018/cpsc_pw_aug_f5
+02:23:31 start gpu1 load 5.0 cpsc2018/cpsc_pw_aug_f9
+02:25:31 done cpsc2018/cpsc_aug_f6
+02:25:31 start gpu0 load 4.5 cpsc2018/cpsc_aug_f9
+02:26:51 done chapman/msdnn_pw_aug_lead-holter_s2
+02:27:11 done chapman/msdnn_pw_aug_lead-frank_s2
+02:27:51 done cpsc2018/cpsc_pw_aug_f7
+02:33:12 done cpsc2018/cpsc_aug_f7
+02:34:32 done cpsc2018/cpsc_aug_f8
+02:35:33 done cpsc2018/cpsc_pw_aug_f8
+02:35:53 done cpsc2018/cpsc_pw_aug_f9
+02:39:13 done chapman/dnn_s2
+02:39:13 done cpsc2018/cpsc_aug_f9
+ALL_JOBS_DONE

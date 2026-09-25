@@ -1,0 +1,24 @@
+msdnn_pw_aug_lead-holter_s2: train 36120 val 4515 test 4515 classes 62 leads 3 aug ('freq', 'crop', 'cycle', 'channel')
+init from checkpoints/pretrain/moco.pt: 189 tensors loaded, 6 left random (['stem.convs.0.weight', 'stem.convs.1.weight', 'stem.convs.2.weight', 'stem.convs.3.weight']...)
+ep   0 lr 9.90e-03 train 2.6472 val 1.8678 best 1.8678@0 129s
+ep   5 lr 9.40e-03 train 1.7418 val 1.5468 best 1.5468@5 328s
+ep  10 lr 8.90e-03 train 1.7900 val 1.4849 best 1.4849@10 535s
+ep  15 lr 8.40e-03 train 1.6367 val 1.4380 best 1.4380@15 743s
+ep  20 lr 7.90e-03 train 1.6058 val 1.4212 best 1.4212@20 940s
+ep  25 lr 7.40e-03 train 1.6090 val 1.3958 best 1.3900@24 1110s
+ep  30 lr 6.90e-03 train 1.5049 val 1.3656 best 1.3656@30 1286s
+ep  35 lr 6.40e-03 train 1.5608 val 1.3614 best 1.3519@31 1502s
+ep  40 lr 5.90e-03 train 1.5192 val 1.3681 best 1.3504@39 1720s
+ep  45 lr 5.40e-03 train 1.4756 val 1.3363 best 1.3363@45 1922s
+ep  50 lr 4.90e-03 train 1.3746 val 1.3654 best 1.3333@49 2067s
+ep  55 lr 4.40e-03 train 1.4989 val 1.3204 best 1.3201@51 2154s
+ep  60 lr 3.90e-03 train 1.4715 val 1.3242 best 1.3117@58 2237s
+ep  65 lr 3.40e-03 train 1.4217 val 1.3266 best 1.3010@63 2355s
+ep  70 lr 2.90e-03 train 1.4150 val 1.3145 best 1.3010@63 2525s
+ep  75 lr 2.40e-03 train 1.4490 val 1.3159 best 1.3010@63 2745s
+ep  80 lr 1.90e-03 train 1.4283 val 1.3004 best 1.3004@80 2938s
+ep  85 lr 1.40e-03 train 1.4299 val 1.2877 best 1.2877@85 3094s
+ep  90 lr 5.02e-04 train 1.3719 val 1.3003 best 1.2877@85 3185s
+ep  95 lr 1.59e-05 train 1.4974 val 1.2891 best 1.2865@92 3265s
+ep  99 lr 1.00e-06 train 1.3591 val 1.2908 best 1.2865@92 3340s
+msdnn_pw_aug_lead-holter_s2 done in 55.7 min: test AUROC 0.9533 AUPRC 0.3729 F1 0.3756

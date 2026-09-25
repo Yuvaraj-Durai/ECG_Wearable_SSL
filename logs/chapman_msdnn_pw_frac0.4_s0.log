@@ -1,0 +1,24 @@
+msdnn_pw_frac0.4_s0: train 14448 val 4515 test 4515 classes 62 leads 12 aug ()
+init from checkpoints/pretrain/moco.pt: 193 tensors loaded, 2 left random (['fc.weight', 'fc.bias']...)
+ep   0 lr 9.90e-03 train 3.9223 val 1.8670 best 1.8670@0 86s
+ep   5 lr 9.40e-03 train 1.6976 val 1.5368 best 1.5368@5 173s
+ep  10 lr 8.90e-03 train 1.5528 val 1.5181 best 1.4867@9 259s
+ep  15 lr 8.40e-03 train 1.4221 val 1.5069 best 1.4744@12 346s
+ep  20 lr 7.90e-03 train 1.3925 val 1.4770 best 1.4648@18 433s
+ep  25 lr 7.40e-03 train 1.2879 val 1.4484 best 1.4483@22 519s
+ep  30 lr 6.90e-03 train 1.1384 val 1.4659 best 1.4483@22 598s
+ep  35 lr 6.40e-03 train 1.2268 val 1.5085 best 1.4483@22 674s
+ep  40 lr 5.90e-03 train 1.1998 val 1.5532 best 1.4483@22 748s
+ep  45 lr 5.40e-03 train 1.1864 val 1.5704 best 1.4483@22 834s
+ep  50 lr 4.90e-03 train 0.9952 val 1.5516 best 1.4483@22 920s
+ep  55 lr 4.40e-03 train 1.0490 val 1.5915 best 1.4483@22 992s
+ep  60 lr 3.90e-03 train 0.9942 val 1.6719 best 1.4483@22 1069s
+ep  65 lr 3.40e-03 train 0.8873 val 1.6515 best 1.4483@22 1147s
+ep  70 lr 2.90e-03 train 0.8691 val 1.7080 best 1.4483@22 1233s
+ep  75 lr 2.40e-03 train 0.7984 val 1.7177 best 1.4483@22 1319s
+ep  80 lr 1.90e-03 train 0.9004 val 1.7082 best 1.4483@22 1392s
+ep  85 lr 1.40e-03 train 0.7256 val 1.7499 best 1.4483@22 1463s
+ep  90 lr 5.04e-04 train 0.7230 val 1.7868 best 1.4483@22 1533s
+ep  95 lr 1.59e-05 train 0.6634 val 1.7814 best 1.4483@22 1603s
+ep  99 lr 1.01e-06 train 0.7318 val 1.7839 best 1.4483@22 1660s
+msdnn_pw_frac0.4_s0 done in 27.7 min: test AUROC 0.9220 AUPRC 0.3242 F1 0.3299

@@ -1,0 +1,23 @@
+cpsc_aug_f1: train 4718 val 521 test 907 classes 9 leads 12 aug ('freq', 'crop', 'cycle', 'channel')
+ep   0 lr 1.19e-03 train 5.6331 val 2.6905 best 2.6905@0 376s
+ep   5 lr 2.19e-03 train 3.5025 val 1.6970 best 1.6970@5 414s
+ep  10 lr 3.19e-03 train 2.5595 val 1.4328 best 1.2648@8 451s
+ep  15 lr 4.19e-03 train 1.8899 val 0.9137 best 0.8874@14 488s
+ep  20 lr 5.19e-03 train 1.7707 val 0.8446 best 0.8446@20 525s
+ep  25 lr 6.19e-03 train 1.7057 val 0.7731 best 0.7731@25 563s
+ep  30 lr 7.19e-03 train 1.7119 val 0.7249 best 0.7249@30 600s
+ep  35 lr 8.19e-03 train 1.2231 val 0.6377 best 0.6377@35 637s
+ep  40 lr 9.19e-03 train 1.2691 val 0.6767 best 0.6104@37 674s
+ep  45 lr 9.81e-03 train 1.2260 val 0.6398 best 0.6104@37 712s
+ep  50 lr 8.81e-03 train 1.1112 val 0.6474 best 0.6104@37 749s
+ep  55 lr 7.81e-03 train 1.0527 val 0.5978 best 0.5574@53 786s
+ep  60 lr 6.81e-03 train 1.0313 val 0.5997 best 0.5485@59 823s
+ep  65 lr 5.81e-03 train 0.8549 val 0.6164 best 0.5485@59 860s
+ep  70 lr 4.81e-03 train 1.0026 val 0.5822 best 0.5485@59 897s
+ep  75 lr 3.81e-03 train 0.7773 val 0.6784 best 0.5485@59 934s
+ep  80 lr 2.81e-03 train 0.7939 val 0.6510 best 0.5485@59 969s
+ep  85 lr 1.81e-03 train 0.5723 val 0.5802 best 0.5485@59 1000s
+ep  90 lr 5.11e-04 train 0.5021 val 0.5905 best 0.5485@59 1031s
+ep  95 lr 1.62e-05 train 0.6187 val 0.5806 best 0.5485@59 1063s
+ep  99 lr 1.02e-06 train 0.6918 val 0.5849 best 0.5485@59 1088s
+cpsc_aug_f1 done in 19.1 min: test AUROC 0.9694 AUPRC 0.8411 F1 0.8026
