@@ -183,9 +183,9 @@ The paper reports F1 0.839 on the hidden CPSC2018 test set (challenge best 0.837
 
 | Model | Params | ms / ECG |
 |---|---|---|
-| DNN | 11.23M | 22.7 |
-| Single-scale DNN-18 | 4.20M | 12.9 |
-| MSDNN | 2.17M | 9.9 |
+| DNN | 11.23M | 22.5 |
+| Single-scale DNN-18 | 4.20M | 13.2 |
+| MSDNN | 2.17M | 10.0 |
 
 The paper: MSDNN 2.13M parameters, < 0.08 s per 15 s recording.
 

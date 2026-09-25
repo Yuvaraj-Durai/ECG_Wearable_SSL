@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from .data import CACHE, CPSC_CLASSES, CPSC_NAMES, ROOT
+from .data import CACHE, CPSC_CLASSES, CPSC_NAMES, RAW, ROOT
 
 MIN_POS = 50  # Chapman terms with >= 50 positives become classes (62 terms; the paper uses 60)
 SPLIT_SEED = 0
@@ -13,7 +13,7 @@ SPLIT_SEED = 0
 def snomed_names():
     """SNOMED code -> (abbreviation, full name) from the PhysioNet 2021 mapping and Chapman's list."""
     out = {}
-    ch = pd.read_csv(os.path.join(ROOT, "..", "ECG_12lead", "data", "chapman", "ConditionNames_SNOMED-CT.csv"))
+    ch = pd.read_csv(os.path.join(RAW, "chapman", "ConditionNames_SNOMED-CT.csv"))
     ch.columns = ["abbr", "name", "code"]
     for r in ch.itertuples():
         out[str(r.code)] = (r.abbr, r.name)

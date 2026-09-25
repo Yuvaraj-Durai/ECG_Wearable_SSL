@@ -25,7 +25,8 @@ import wfdb
 from scipy.signal import butter, find_peaks, resample_poly, sosfiltfilt
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OLD = os.path.join(ROOT, "..", "ECG_12lead", "data")  # raw downloads shared with ECG_12lead
+# raw downloads (Chapman, CODE-15%); set ECG_RAW_DATA to their folder, default ../ECG_12lead/data
+RAW = os.environ.get("ECG_RAW_DATA", os.path.join(ROOT, "..", "ECG_12lead", "data"))
 CACHE = os.path.join(ROOT, "data", "cache")
 FS, T = 500, 5000
 MAX_R = 128  # enough beats for 60 s CPSC records
@@ -126,7 +127,7 @@ def mad(a):
 
 
 def build_code15():
-    parts = sorted(glob.glob(os.path.join(OLD, "code15", "exams_part*.zip")))
+    parts = sorted(glob.glob(os.path.join(RAW, "code15", "exams_part*.zip")))
     os.makedirs(CACHE, exist_ok=True)
     with Pool(9) as p:  # ~4 GB hdf5 each, extracted to the cache temporarily
         tags = p.map(_code15_part, parts)
@@ -161,7 +162,7 @@ def build_code15():
 if __name__ == "__main__":
     what = sys.argv[1]
     if what == "chapman":
-        build_wfdb("chapman", os.path.join(OLD, "chapman", "WFDBRecords", "*", "*", "*.hea"))
+        build_wfdb("chapman", os.path.join(RAW, "chapman", "WFDBRecords", "*", "*", "*.hea"))
     elif what == "cpsc2018":
         # 6-60 s records: keep up to 60 s; training crops 10 s windows, testing slides over the record
         build_wfdb("cpsc2018", os.path.join(ROOT, "data", "cpsc2018", "g*", "*.hea"), tmax=12 * T, tmin=int(0.55 * T))

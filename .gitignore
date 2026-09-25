@@ -1,5 +1,12 @@
-data/
+# datasets: downloaded by the user (see README), too large for GitHub
+data/*
+# ...except the small SNOMED-CT label-name tables the code needs
+!data/dx_mapping_scored.csv
+!data/dx_mapping_unscored.csv
+
+# model weights (> 100 MB) and the Python environment
 checkpoints/
 .venv
+
 __pycache__/
 *.pyc

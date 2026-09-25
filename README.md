@@ -1,4 +1,4 @@
-# ECG_wearable_SSL
+# Self-supervised learning for 12-lead ECG diagnosis: a reproduction of Lai et al. (2023)
 
 A reproduction, on public data, of
 
@@ -11,12 +11,45 @@ re-run: the MSDNN network, MoCo pre-training with a distributional divergence lo
 weighted BCE + pairwise-ranking loss. The paper's 658,486 wearable ECGs are proprietary (Cardiocloud), and its
 GitHub repository no longer exists, so public datasets stand in for them (see *Deviations*).
 
+## Key results
+
+The paper's main findings hold on public data. Absolute scores are lower because the data differ (see *Deviations*).
+
+| Claim (paper) | Paper | This reproduction |
+|---|---|---|
+| Multiscale MSDNN matches the 34-layer DNN with far fewer parameters | AUPRC 0.582 vs 0.578 | 0.343 vs 0.330 (2.17M vs 11.2M params) |
+| Self-supervised pre-training helps | +1.1 AUPRC points | +3.7 points (p < 0.001) |
+| ECG augmentation helps | +5.5 points | +4.9 points (p < 0.001) |
+| 1 lead < 3 leads < 12 leads | 0.464 < 0.586 < 0.646 | 0.298 < 0.373 < 0.395 |
+| CPSC2018 F1 | 0.839 | 0.820 (held-out split) |
+
+Full tables: [results/RESULTS.md](results/RESULTS.md); figures: [figures/](figures/).
+
+![Ablation (Fig. 2a)](figures/fig2a_ablation.png)
+
+## Figures
+
+| File | Paper | Shows |
+|---|---|---|
+| [fig1_ecg_augmentations](figures/fig1_ecg_augmentations.png) | Fig. 1d-f | a clean ECG, the four augmentations (grey = original, red = masked), real NSTDB artifacts |
+| [fig2_all](figures/fig2_all.png) | Fig. 2 | all Fig. 2 panels on one page, in the paper's layout |
+| [fig2a](figures/fig2a_ablation.png) - [fig2g](figures/fig2g_operating_points_af.png) | Fig. 2a-g | the same panels, one file each |
+| [fig3c_cam](figures/fig3c_cam.png) | Fig. 3c | where the model looks (CAM) for ST elevation, AF and PVC |
+| [fig_pretraining_loss](figures/fig_pretraining_loss.png) | – | MoCo pre-training curves |
+
+In the violin plots each dot is one diagnostic term (Fig. 2c: one seed), black lines are the 25th, 50th and 75th
+percentiles, and the mean is printed above. Fig. 2f shows IRBBB where the paper shows PRBBB, which Chapman does
+not have. In Fig. 2g the AF precision stays near 0.2 at every recall; Chapman's AF labels overlap heavily with
+atrial flutter, so AF is a weak example here.
+
+## Quick start
+
 ```bash
 ./run_all.sh          # tables + figures from the saved results (minutes)
 ./run_all.sh full     # data caches -> pre-training -> all runs -> report (about a day on 2 GPUs)
 ```
 
-Results: [results/RESULTS.md](results/RESULTS.md), figures in [figures/](figures/).
+See *Setup* below for installation and data.
 
 ## What maps to what
 
@@ -40,7 +73,7 @@ Results: [results/RESULTS.md](results/RESULTS.md), figures in [figures/](figures
 | Fig. 2c single augmentations | `msdnn_aug-{freq,crop,cycle,channel}`, seeds 0–2 | Table 5 |
 | Fig. 2d robustness | noisy-test predictions of the ablation runs | Table 7 |
 | Fig. 2e 1/3-lead devices | `msdnn_pw_aug_lead-{I,holter,frank}`, seeds 0–2 | Table 8 |
-| Fig. 2f PR curves | ablation runs, seed 0 | figure only |
+| Fig. 2f PR curves (PVC, STD, IRBBB) | ablation runs, seed 0 | figure only |
 | Fig. 3c CAM | `python -m src.cam` | figure only |
 | CPSC2018 | `results/runs/cpsc2018/cpsc_{pw_aug,aug}_f{0..9}` → `python -m src.cpsc` | Table 9 |
 | Params, inference time (Discussion) | – | Table 10 |
@@ -108,12 +141,51 @@ src/train.py       fine-tuning / supervised training (all experiments)
 src/noisy_test.py  NSTDB artifact test set
 src/cpsc.py        CPSC2018 voting ensemble
 src/cam.py         class activation maps
-src/report.py      tables (results/RESULTS.md) and figures
+src/report.py      tables (results/RESULTS.md); then calls src/figures.py
+src/figures.py     Fig. 1d-f and Fig. 2a-g in the paper's layout
 scripts/scheduler.py         load-aware scheduler for both GPUs
 scripts/download_cpsc2018.sh CPSC2018 from PhysioNet
 ```
 
-Raw Chapman and CODE-15% files are read from `../ECG_12lead/data`. The environment `.venv` is a link to
-`../ECG_12lead/.venv` (Python 3.12, PyTorch 2.11, CUDA 12.8; see `../ECG_12lead/requirements.txt`).
-Additional downloads: CPSC2018 (`data/cpsc2018`), NSTDB (`data/nstdb`), and the PhysioNet 2021 SNOMED mapping
-files (`data/dx_mapping_*.csv`).
+## Setup
+
+**Environment** (Python 3.12, CUDA 12.8):
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+pip install -r requirements.txt
+```
+
+**Data.** The datasets are not included in this repository. Download them from their sources:
+
+| Dataset | Source | Place in |
+|---|---|---|
+| Chapman-Shaoxing/Ningbo | [PhysioNet `ecg-arrhythmia` 1.0.0](https://physionet.org/content/ecg-arrhythmia/1.0.0/) | `$ECG_RAW_DATA/chapman/` (`WFDBRecords/`, `ConditionNames_SNOMED-CT.csv`) |
+| CODE-15% | [Zenodo 4916206](https://zenodo.org/records/4916206) | `$ECG_RAW_DATA/code15/` (`exams_part*.zip`) |
+| CPSC2018 | PhysioNet/CinC 2020 challenge | `data/cpsc2018/`, via `scripts/download_cpsc2018.sh` |
+| MIT-BIH Noise Stress Test | [PhysioNet `nstdb` 1.0.0](https://physionet.org/content/nstdb/1.0.0/) | `data/nstdb/` (`bw`, `em`, `ma` records) |
+
+`ECG_RAW_DATA` defaults to `../ECG_12lead/data`; point it at your download folder with
+`export ECG_RAW_DATA=/path/to/raw`. The SNOMED-CT label-name tables (`data/dx_mapping_*.csv`, from the
+PhysioNet/CinC 2021 challenge) are included.
+
+## Citation
+
+If you use this code, please cite the original paper:
+
+```bibtex
+@article{lai2023practical,
+  title   = {Practical intelligent diagnostic algorithm for wearable 12-lead {ECG} via self-supervised learning on large-scale dataset},
+  author  = {Lai, Jiewei and Tan, Huixin and Wang, Jinliang and Ji, Lei and Guo, Jun and Han, Baoshi and Shi, Yajun and Feng, Qianjin and Yang, Wei},
+  journal = {Nature Communications},
+  volume  = {14},
+  pages   = {3741},
+  year    = {2023},
+  doi     = {10.1038/s41467-023-39472-8}
+}
+```
+
+## License
+
+Code: [MIT](LICENSE). The datasets keep their own licenses; see each source above.

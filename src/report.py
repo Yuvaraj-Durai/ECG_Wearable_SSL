@@ -1,24 +1,21 @@
 """Tables and figures mirroring Lai et al. (Nat. Commun. 2023) from the saved runs.
 
   results/RESULTS.md   all tables (markdown)
-  figures/             fig1e augmentations, fig2a-g, fig3c (src.cam), pre-training loss
+  figures/             drawn by src.figures (Fig. 1, Fig. 2a-g) and src.cam (Fig. 3c)
 
   python -m src.report
 """
 import glob
 import json
 import os
+import sys
 import time
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from scipy.stats import ttest_rel
 from sklearn.metrics import precision_recall_curve
 
-from .augment import channel_mask, crop_resize, cycle_mask, freq_dropout
 from .datasets import chapman
 from .metrics import auroc_auprc, example_metrics, label_metrics
 from .models import build_model
@@ -69,24 +66,6 @@ def seed_avg_ap(rs, key="p_test"):
     return np.mean([per_class(r, key)[2] for r in rs], 0)
 
 
-def savefig(fig, name):
-    fig.tight_layout()
-    fig.savefig(os.path.join(FIG, name + ".png"), dpi=150)
-    fig.savefig(os.path.join(FIG, name + ".pdf"))
-    plt.close(fig)
-
-
-def violin(ax, data, labels, colors=None):
-    parts = ax.violinplot(data, showmedians=True, showextrema=False)
-    for i, b in enumerate(parts["bodies"]):
-        b.set_alpha(0.35)
-        if colors:
-            b.set_facecolor(colors[i])
-    for i, d in enumerate(data):
-        ax.scatter(np.random.default_rng(i).normal(i + 1, 0.04, len(d)), d, s=6, color="k", alpha=0.6)
-    ax.set_xticks(range(1, len(labels) + 1), labels, fontsize=8)
-
-
 # ---------------------------------------------------------------------------------------- tables
 def table1_2():
     r = run("msdnn_pw_aug_s0")
@@ -129,10 +108,8 @@ def table1_2():
     md("")
 
 
-def table3_fig2g():
-    r = run("msdnn_pw_aug_s0")
-    if r is None:
-        return
+def af_points(r):
+    """AF test labels/scores and the three operating points of Fig. 2g / Table 3."""
     k = D["classes"].index("164889003")  # atrial fibrillation
     y, p = D["y"][r["idx_test"], k], r["p_test"][:, k]
     yv, pv = D["y"][r["idx_val"], k], r["p_val"][:, k]
@@ -144,6 +121,14 @@ def table3_fig2g():
     # validation threshold that reaches sensitivity >= 0.95
     tv = np.sort(pv[yv == 1])
     ft = tv[int(np.floor(0.05 * len(tv)))]
+    return y, p, ft, be, of
+
+
+def table3():
+    r = run("msdnn_pw_aug_s0")
+    if r is None:
+        return
+    y, p, ft, be, of = af_points(r)
     ths = sorted(set([0.004, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9, 0.97, 0.998, ft, be, of]))
     md("## Table 3. Atrial fibrillation at different thresholds (test split)", "",
        f"Bold: high-sensitivity point (validation sensitivity ≥ 0.95, threshold {ft:.3f}), break-even point ({be:.3f}), "
@@ -156,29 +141,7 @@ def table3_fig2g():
                f"{tp / max(tp + fp, 1):.3f} | {tn / max(tn + fp, 1):.3f}")
         md(f"| **{row.replace(' | ', '** | **')}** |" if th in (ft, be, of) else f"| {row} |")
     md("")
-    fig, ax = plt.subplots(1, 2, figsize=(11, 4.2))
-    ax[0].plot(rc, pr, color="purple")
-    ax[0].plot([0, 1], [0, 1], "k", lw=0.8)
-    for th, mk, lab in [(be, "o", "Break even point"), (of, "s", "Optimal F1 point"), (ft, "*", "High-sensitivity point")]:
-        b = p >= th
-        tp = (b & (y == 1)).sum()
-        ax[0].scatter(tp / y.sum(), tp / max(b.sum(), 1), marker=mk, s=60, label=lab, zorder=3)
-    ax[0].set(xlabel="Sensitivity (recall)", ylabel="PPV (precision)", title="Three operating points on the PR curve of AF")
-    ax[0].legend()
-    grid = np.linspace(0, 1, 201)
-    P = [((p >= g) & (y == 1)).sum() / max((p >= g).sum(), 1) for g in grid]
-    Rr = [((p >= g) & (y == 1)).sum() / y.sum() for g in grid]
-    F = [2 * a * b / max(a + b, 1e-12) for a, b in zip(P, Rr)]
-    ax[1].plot(grid, P, label="Precision"), ax[1].plot(grid, Rr, label="Recall"), ax[1].plot(grid, F, label="F1")
-    for th, col, lab in [(ft, "r", "High-sens."), (be, "b", "Break even"), (of, "g", "Optimal F1")]:
-        ax[1].axvline(th, color=col, lw=1)
-        ax[1].text(th, 0.05, lab, rotation=90, color=col, fontsize=8)
-    ax[1].set(xlabel="Threshold", ylabel="Value", title="Precision, recall and F1 versus threshold")
-    ax[1].legend()
-    savefig(fig, "fig2g_operating_points_af")
-
-
-def table4_fig2a():
+def table4():
     rs = {k: seeds(k) for k, _ in ABL}
     rs = {k: v for k, v in rs.items() if v}
     if not rs:
@@ -207,14 +170,9 @@ def table4_fig2a():
         x, y = per_class(a)[2], per_class(b)[2]
         md(f"| MSDNN vs MSDNN with PW (10% of training set) | {np.mean(y - x):+.4f} | {ttest_rel(x, y).pvalue:.3g} |")
     md("")
-    keys = [k for k, _ in ABL if k in rs]
-    fig, ax = plt.subplots(figsize=(9, 4))
-    violin(ax, [seed_avg_ap(rs[k]) for k in keys], [names[k].replace(" with ", "\nwith ") for k in keys])
-    ax.set(ylabel="AUPRC (per class)", ylim=(0, 1.02), title="Ablation: per-class test AUPRC (seed-averaged)")
-    savefig(fig, "fig2a_ablation")
 
 
-def table5_fig2c():
+def table5():
     base, comb = seeds("msdnn"), seeds("msdnn_aug")
     rs = {k: seeds(f"msdnn_aug-{k}") for k, _ in AUG}
     if not base or not any(rs.values()):
@@ -227,18 +185,9 @@ def table5_fig2c():
             md(f"| {n} | {ms([r['test']['auroc'] for r in v])} | {ms([r['test']['auprc'] for r in v])} | "
                f"{ms([r['test_noisy']['auprc'] for r in v if 'test_noisy' in r])} |")
     md("")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ks = [(k, n) for k, n in AUG if rs[k]]
-    violin(ax, [[r["test"]["auprc"] for r in rs[k]] for k, _ in ks], [n.replace(" ", "\n") for _, n in ks])
-    ax.axhline(np.mean([r["test"]["auprc"] for r in base]), color="tab:orange", label="MSDNN without Aug")
-    if comb:
-        ax.axhline(np.mean([r["test"]["auprc"] for r in comb]), color="tab:cyan", label="MSDNN with combined Aug")
-    ax.set(ylabel="macro AUPRC", xlabel="ECG augmentation methods")
-    ax.legend(fontsize=8)
-    savefig(fig, "fig2c_augmentations")
 
 
-def table6_fig2b():
+def table6():
     n_tr = int((D["split"] == "train").sum())
     pts = {}
     for pw in ["", "_pw"]:
@@ -256,27 +205,13 @@ def table6_fig2b():
             A, B = a.get(f, (np.nan, np.nan)), b.get(f, (np.nan, np.nan))
             md(f"| {f:.0%} | {int(round(f * n_tr))} | {A[0]:.3f} | {B[0]:.3f} | {B[0] - A[0]:+.3f} | {A[1]:.3f} | {B[1]:.3f} |")
     md("")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    for pw, lab, c, mk in [("", "MSDNN", "peru", "o"), ("_pw", "MSDNN with PW", "green", "s")]:
-        if pw in pts:
-            f, p, _ = zip(*pts[pw])
-            ax.plot(np.array(f) * n_tr, p, marker=mk, color=c, label=lab)
-    ax.set(xlabel="Number of ECGs", ylabel="macro AUPRC")
-    ax.legend()
-    savefig(fig, "fig2b_training_size")
 
 
-def fig2d():
+def table7():
     a, b = seeds("msdnn"), seeds("msdnn_aug")
     a, b = [r for r in a if "p_test_noisy" in r], [r for r in b if "p_test_noisy" in r]
     if not a or not b:
         return
-    fig, ax = plt.subplots(figsize=(8, 4))
-    data = [seed_avg_ap(a), seed_avg_ap(a, "p_test_noisy"), seed_avg_ap(b), seed_avg_ap(b, "p_test_noisy")]
-    violin(ax, data, ["MSDNN\nclean test", "MSDNN\nnoisy test", "MSDNN with Aug\nclean test", "MSDNN with Aug\nnoisy test"],
-           ["tab:orange", "tab:orange", "tab:blue", "tab:blue"])
-    ax.set(ylabel="AUPRC (per class)", ylim=(0, 1.02), title="Robustness to real wearable artifacts (NSTDB)")
-    savefig(fig, "fig2d_robustness")
     md("## Table 7. Robustness (Fig. 2d): test macro AUPRC on clean and noisy ECGs", "",
        "| Model | Clean | Noisy | Drop |", "|---|---|---|---|")
     for n, v in [("MSDNN", a), ("MSDNN with Aug", b), ("MSDNN with PW&Aug", [r for r in seeds("msdnn_pw_aug") if "p_test_noisy" in r])]:
@@ -287,7 +222,7 @@ def fig2d():
        f"noisy {np.mean([r['test_noisy']['auprc'] for r in b]) - np.mean([r['test_noisy']['auprc'] for r in a]):+.3f} AUPRC.", "")
 
 
-def table8_fig2e():
+def table8():
     rs = [(n, seeds(f"msdnn_pw_aug_{k}" if k else "msdnn_pw_aug")) for k, n in LEADS]
     rs = [(n, v) for n, v in rs if v]
     if len(rs) < 2:
@@ -297,31 +232,6 @@ def table8_fig2e():
     for n, v in rs:
         md(f"| {n} | {ms([r['test']['auroc'] for r in v])} | {ms([r['test']['auprc'] for r in v])} | {ms([r['test']['f1'] for r in v])} |")
     md("")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    violin(ax, [seed_avg_ap(v) for _, v in rs], [n.replace(" (", "\n(") for n, _ in rs])
-    ax.set(xlabel="Number of leads", ylabel="AUPRC (per class)", ylim=(0, 1.02))
-    savefig(fig, "fig2e_leads")
-
-
-def fig2f():
-    rs = {k: run(f"{k}_s0") for k, _ in ABL}
-    rs = {k: v for k, v in rs.items() if v}
-    if len(rs) < 2:
-        return
-    show = [("17338001", "PVC"), ("429622005", "ST depression"), ("713426002", "Incomplete RBBB")]
-    show = [(c, n) for c, n in show if c in D["classes"]]
-    fig, axes = plt.subplots(1, len(show), figsize=(5 * len(show), 4))
-    for ax, (code, name) in zip(np.atleast_1d(axes), show):
-        k = D["classes"].index(code)
-        for key, lab in ABL:
-            if key in rs:
-                y, p = D["y"][rs[key]["idx_test"], k], rs[key]["p_test"][:, k]
-                pr, rc, _ = precision_recall_curve(y, p)
-                ap = per_class(rs[key])
-                ax.plot(rc, pr, lw=1, label=f"{lab}: {ap[2][list(ap[0]).index(k)]:.4f}")
-        ax.set(title=f"Class {name}", xlabel="Sensitivity (recall)", ylabel="PPV (precision)", xlim=(0, 1), ylim=(0, 1.02))
-        ax.legend(fontsize=7, loc="lower left")
-    savefig(fig, "fig2f_pr_curves")
 
 
 def table9_cpsc():
@@ -360,42 +270,6 @@ def table10_cost():
     md("", "The paper: MSDNN 2.13M parameters, < 0.08 s per 15 s recording.", "")
 
 
-def fig1e():
-    nsr = D["y"][:, D["classes"].index("426783006")] == 1  # a normal sinus rhythm test ECG
-    i = int(np.where((D["split"] == "test") & nsr & (D["y"].sum(1) == 1))[0][0])
-    x = torch.from_numpy(D["X"][i].astype(np.float32).T[None])
-    R = torch.from_numpy(D["R"][i][None]).long()
-    torch.manual_seed(1)
-    views = [("Original (lead I)", x), ("Frequency dropout", freq_dropout(x)), ("Crop resize", crop_resize(x)),
-             ("Cycle mask", cycle_mask(x, R)), ("Channel mask (a masked lead)", None)]
-    m = channel_mask(x, p=0.5)
-    lead = int(torch.where(m[0].abs().sum(1) == 0)[0][0]) if (m[0].abs().sum(1) == 0).any() else 0
-    fig, axes = plt.subplots(len(views), 1, figsize=(10, 7), sharex=True)
-    t = np.arange(5000) / 500
-    for ax, (n, v) in zip(axes, views):
-        sig = (m[0, lead] if v is None else v[0, 0]).numpy()
-        ax.plot(t, sig, color="purple" if v is not None and n != views[0][0] else "green", lw=0.8)
-        ax.set_title(n, fontsize=9, loc="right")
-        ax.set_yticks([])
-    axes[-1].set_xlabel("time (s)")
-    savefig(fig, "fig1e_augmentations")
-
-
-def fig_pretrain():
-    h = os.path.join(ROOT, "checkpoints", "pretrain", "moco_history.txt")
-    if not os.path.exists(h):
-        return
-    a = np.loadtxt(h, ndmin=2)
-    fig, ax = plt.subplots(1, 2, figsize=(10, 3.5))
-    ax[0].plot(a[:, 0], a[:, 1], label="contrastive $L_C$")
-    ax[0].plot(a[:, 0], a[:, 2], label="divergence $L_D$")
-    ax[0].set(xlabel="epoch", ylabel="loss")
-    ax[0].legend()
-    ax[1].plot(a[:, 0], a[:, 3])
-    ax[1].set(xlabel="epoch", ylabel="top-1 key retrieval (72k queue)")
-    savefig(fig, "fig_pretraining_loss")
-
-
 def main():
     global D
     D = chapman()
@@ -404,14 +278,15 @@ def main():
        f"Chapman-Shaoxing/Ningbo: {len(D['classes'])} SNOMED-CT terms with ≥ 50 positives; split "
        f"{(D['split'] == 'train').sum()}/{(D['split'] == 'val').sum()}/{(D['split'] == 'test').sum()} (train/val/test). "
        "Pre-training: CODE-15% + Chapman training split. See README.md for every deviation from the paper.", "")
-    for f in [table1_2, table3_fig2g, table4_fig2a, table5_fig2c, table6_fig2b, fig2d, table8_fig2e, fig2f,
-              table9_cpsc, table10_cost, fig1e, fig_pretrain]:
+    for f in [table1_2, table3, table4, table5, table6, table7, table8, table9_cpsc, table10_cost]:
         try:
             f()
         except Exception as e:  # a missing experiment must not stop the report
             print(f"{f.__name__} skipped: {type(e).__name__}: {e}")
     open(os.path.join(ROOT, "results", "RESULTS.md"), "w").write("\n".join(OUT) + "\n")
     print("\n".join(OUT))
+    from .figures import make_all
+    make_all(sys.modules[__name__])
 
 
 if __name__ == "__main__":
