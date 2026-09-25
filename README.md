@@ -23,7 +23,7 @@ The paper's main findings hold on public data. Absolute scores are lower because
 | 1 lead < 3 leads < 12 leads | 0.464 < 0.586 < 0.646 | 0.298 < 0.373 < 0.395 |
 | CPSC2018 F1 | 0.839 | 0.820 (held-out split) |
 
-Full tables: [results/RESULTS.md](results/RESULTS.md); figures: [figures/](figures/).
+Full tables: [results/RESULTS.md](results/RESULTS.md); figures: [figures/](figures/); side-by-side comparison with the paper: [COMPARISON.md](COMPARISON.md).
 
 ![Ablation (Fig. 2a)](figures/fig2a_ablation.png)
 
